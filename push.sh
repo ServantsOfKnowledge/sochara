@@ -1,4 +1,3 @@
 #!/bin/sh
-
-git push origin master
-git push origin master:gh-pages
+# Push to deploy — GitHub Pages serves from main branch root
+git push origin main
