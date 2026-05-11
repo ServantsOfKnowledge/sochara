@@ -1,0 +1,459 @@
+/* MANUAL WORK
+ */
+
+body {
+  background-color: #f8f9fa !important;
+  color: #333 !important;
+  padding-top: 68px !important;
+}
+
+/* ── Navbar ── */
+.navbar.navbar-fixed-top.jshead {
+  overflow: visible;
+  height: auto;
+  display: flex;
+  align-items: center;
+  background: #4a5568 !important;
+  border-bottom: none;
+  padding: 0 30px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sok-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 14px 4px 4px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.sok-brand:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.sok-logo-img {
+  height: 34px;
+  width: auto;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+
+.sok-name {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 18px;
+  color: #fff !important;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+}
+
+.partner-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.partner-logo-img {
+  height: 38px;
+  width: auto;
+  background: #fff;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.partner-name {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 20px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.clear {
+  clear: both;
+}
+
+/* ── Quotes / Description ── */
+.quotes {
+  padding: 10px 20px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 50px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  text-align: justify;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* ── Books ── */
+.booksection p.description {
+  color: #718096;
+}
+.booksection p.level {
+  color: #a0aec0;
+}
+
+/* ── View overlay ── */
+.booksection .view {
+  background-color: rgba(46, 204, 113, 0.92) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  top: 0;
+  left: 0;
+}
+.booksection .view:hover {
+  opacity: 1 !important;
+}
+
+/* ── Cover & meta (grid default) ── */
+.booksection {
+  display: flex;
+  gap: 16px;
+}
+
+.book-link {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.booksection .view {
+  width: 100%;
+  height: 100%;
+}
+
+.booksection .cover {
+  width: 140px;
+  height: 184px;
+  outline: 3px solid #e2e8f0;
+  border-radius: 4px;
+  background: #e2e8f0 no-repeat center;
+  background-size: cover;
+}
+
+.booksection .book-meta {
+  flex: 1;
+  min-width: 0;
+}
+.booksection .book-meta h2 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+.booksection .book-meta h2 a {
+  color: #2d3748 !important;
+  text-decoration: none;
+}
+.booksection .book-meta h2 a:hover {
+  text-decoration: underline;
+}
+.booksection .book-meta h3 {
+  margin: 0 0 2px;
+}
+.booksection .book-meta h3 a {
+  color: #2ecc71 !important;
+}
+.booksection .book-meta h3 a:hover {
+  color: #1ab85d !important;
+}
+.booksection .book-meta p {
+  margin: 2px 0;
+}
+.booksection .book-meta .subject {
+  color: #2ecc71;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 480px) {
+  .booksection .cover {
+    width: 110px;
+    height: 154px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .booksection {
+    display: block;
+  }
+  .book-link {
+    float: none;
+  }
+  .booksection .cover {
+    width: 228px;
+    height: 298px;
+    margin-bottom: 10px;
+  }
+  .booksection .book-meta {
+    overflow: visible;
+  }
+}
+
+/* ── Infos toggle ── */
+#jsinfos {
+  background: #fff !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+  border-radius: 8px !important;
+  color: #333 !important;
+}
+#jsinfos p, #jsinfos a {
+  color: #555 !important;
+}
+
+/* ── Filter & Search ── */
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.filter-row p {
+  margin: 0;
+  font-weight: 600;
+  color: #4a5568;
+}
+#filterByYear {
+  width: auto;
+  min-width: 120px;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+.search-box input {
+  width: 100%;
+  padding: 8px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  color: #333;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+.search-box input:focus {
+  outline: none;
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.15);
+}
+.search-box input::placeholder {
+  color: #a0aec0;
+}
+
+/* ── Year Filter Dropdown ── */
+#filterByYear {
+  padding: 8px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  color: #4a5568;
+  cursor: pointer;
+}
+
+/* ── Book Count ── */
+.book-count {
+  font-size: 13px;
+  color: #718096;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+/* ── View Toggle ── */
+.view-toggle {
+  display: flex;
+  gap: 4px;
+}
+.view-btn {
+  background: #e2e8f0;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  color: #718096;
+  transition: all 0.15s;
+}
+.view-btn.active {
+  background: #2ecc71;
+  color: #fff;
+}
+.view-btn:hover:not(.active) {
+  background: #cbd5e0;
+}
+
+/* ── List View ── */
+#issueswrap.view-list .booksection {
+  width: 100% !important;
+  margin-left: 0 !important;
+  display: flex !important;
+  gap: 16px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  margin-bottom: 12px;
+  float: none;
+}
+#issueswrap.view-list .book-link {
+  float: none;
+  flex-shrink: 0;
+}
+#issueswrap.view-list .booksection .cover {
+  width: 80px !important;
+  height: 104px !important;
+  outline: 2px solid #e2e8f0 !important;
+}
+#issueswrap.view-list .booksection .view {
+  width: 80px !important;
+  height: 104px !important;
+  line-height: 104px !important;
+  font-size: 13px !important;
+}
+#issueswrap.view-list .booksection .book-meta {
+  flex: 1;
+  overflow: visible;
+}
+#issueswrap.view-list .booksection .book-meta h2 {
+  font-size: 16px;
+  margin: 0 0 4px;
+  white-space: normal;
+}
+#issueswrap.view-list .booksection .book-meta h3 {
+  margin: 0 0 2px;
+}
+#issueswrap.view-list .booksection .book-meta .subject {
+  margin: 0 0 2px;
+}
+#issueswrap.view-list .booksection .book-meta p.description {
+  margin: 4px 0 0;
+  height: auto;
+}
+#issueswrap.view-list .booksection .book-meta p.level {
+  margin: 0;
+}
+
+/* ── Load Sentinel ── */
+#loadSentinel {
+  width: 100%;
+  height: 2px;
+}
+
+/* ── Footer ── */
+.footer p, .footer a {
+  color: #a0aec0 !important;
+}
+
+/* ── Links ── */
+a#infos {
+  color: rgba(255,255,255,0.85) !important;
+  text-shadow: none !important;
+  font-size: 28px;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+a#infos:hover {
+  color: #fff !important;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .navbar.navbar-fixed-top.jshead {
+    padding: 0 15px;
+  }
+  .sok-name {
+    font-size: 14px;
+  }
+  .sok-logo-img {
+    height: 28px;
+  }
+  .partner-logo-img {
+    height: 28px;
+  }
+  .partner-name {
+    font-size: 15px;
+  }
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-box {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar.navbar-fixed-top.jshead {
+    padding: 0 10px;
+  }
+  .nav-left .sok-name {
+    display: none;
+  }
+  .sok-logo-img {
+    height: 26px;
+  }
+  .partner-logo-img {
+    height: 24px;
+  }
+  .partner-name {
+    font-size: 13px;
+  }
+}
+
+/* Book Reader Modal */
+#bookreader {
+  display: none;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background: rgba(0,0,0,0.95) !important;
+  z-index: 99999 !important;
+}
+#bookreader iframe {
+  display: block !important;
+  position: absolute !important;
+  top: 50px !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: calc(100% - 50px) !important;
+  border: none !important;
+}
+#closeReader {
+  position: absolute !important;
+  top: 5px !important;
+  right: 10px !important;
+  font-size: 40px !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  z-index: 100000 !important;
+  line-height: 1 !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+#closeReader:hover {
+  color: #eedb59 !important;
+}

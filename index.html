@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sochara Digital Archive</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="Sochara — community health and social development resources.">
+    <meta name="author" content="ServantsOfKnowledge">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="./css/index.css" media="all">
+    <link rel="stylesheet" type="text/css" href="./css/support.css?id=1234" media="all">
+
+    <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+
+    <link rel="shortcut icon" href="./img/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./img/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./img/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./img/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<body>
+    <!-- ==========================
+    NAVBAR
+    =========================== -->
+    <div class="navbar navbar-fixed-top jshead">
+        <div class="nav-center">
+            <div class="nav-left">
+                <a href="https://sanchaya.org" class="sok-brand" target="_blank">
+                    <img src="https://ia801906.us.archive.org/0/items/ServantsOfKnowledge/ServantsOfKnowledge_itemimage.jpg" alt="ServantsOfKnowledge" class="sok-logo-img">
+                    <span class="sok-name">Servants Of Knowledge</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="https://sochara.org" class="partner-brand" target="_blank">
+                    <img src="./img/logo.png" alt="CSIR-CFTRI" class="partner-logo-img">
+                    <span class="partner-name">Sochara Digital Archive</span>
+                </a>
+                <a href="#" id="infos">?</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================
+    TOGGLE INFOS
+    =========================== -->
+    <div class="container" id="jsinfos">
+        <div class="row">
+            <div class="span12">
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================
+    JOB / PYTHONBOOKS
+    =========================== -->
+
+    <div class="container quotes">
+        <div class="container">
+            <p> Sochara — community health and social development resources.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container">
+    <div class="container">
+        <div class="row">
+
+            <div class="span12 row-fluid filter-row">
+                <p>Filter by year :</p>
+                <select id="filterByYear">
+                    <option value="any">All</option>
+                </select>
+                <p>Subject :</p>
+                <select id="filterBySubject">
+                    <option value="any">All</option>
+                </select>
+                <div class="search-box">
+                    <input type="text" id="searchBooks" placeholder="Search by title, author, or description...">
+                </div>
+                <span id="bookCount" class="book-count"></span>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" title="Grid view">▦</button>
+                    <button class="view-btn" data-view="list" title="List view">☰</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ////////// WRAPPER BOOKS -->
+        <div class="row" id="issueswrap"></div>
+    </div>
+
+    <!-- ==========================
+    FOOTER
+    =========================== -->
+    <div class="footer">
+        <hr>
+        <p>
+            This portal is a part of Digitization Project by Servants Of Knowledge in collaboration with the Respective Organization.
+        </p>
+        <p>Site content is licensed under <b>Creative Commons Attribution 4.0</b>. Individual books may have separate copyrights — refer to the book page for details.</p>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="./js/mustache.js"></script>
+
+    <script type="text/javascript">
+
+    var BATCH = 12,
+        allBooks = [],
+        rendered = 0,
+        template = '',
+        currentYear = 'any',
+        currentSubject = 'any',
+        searchQuery = '',
+        loadingMore = false;
+
+    function getBookSubjects(book) {
+        var subs = book.subjects;
+        if (!subs) return [];
+        if (typeof subs === 'string') return [subs];
+        if (Array.isArray(subs)) return subs;
+        return [];
+    }
+
+    function randOrd(){
+      return (Math.round(Math.random())-0.5);
+    }
+
+    function loadCover(el) {
+        var url = $(el).data('cover');
+        if (url) el.style.backgroundImage = 'url(' + url + ')';
+    }
+
+    var coverObserver = 'IntersectionObserver' in window ? new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+            if (e.isIntersecting) { loadCover(e.target); coverObserver.unobserve(e.target); }
+        });
+    }) : null;
+
+    function lazyLoadCovers(container) {
+        var covers = container.find ? container.find('.cover') : $(container).find('.cover');
+        covers.each(function() {
+            if (coverObserver) coverObserver.observe(this);
+            else loadCover(this);
+        });
+    }
+
+    function getFilteredBooks() {
+        var books = allBooks;
+        if (currentYear !== 'any') {
+            var y = parseInt(currentYear, 10);
+            books = $.grep(books, function(b) { return b.year === y; });
+        }
+        if (currentSubject !== 'any') {
+            books = $.grep(books, function(b) {
+                var subs = getBookSubjects(b);
+                return subs.indexOf(currentSubject) !== -1;
+            });
+        }
+        if (searchQuery) {
+            var q = searchQuery.toLowerCase();
+            books = $.grep(books, function(b) {
+                var subs = getBookSubjects(b).join(' ').toLowerCase();
+                return (b.title && b.title.toLowerCase().indexOf(q) !== -1) ||
+                       (b.author && b.author.toLowerCase().indexOf(q) !== -1) ||
+                       (b.info && b.info.toLowerCase().indexOf(q) !== -1) ||
+                       subs.indexOf(q) !== -1;
+            });
+        }
+        return books;
+    }
+
+    function renderBatch() {
+        var books = getFilteredBooks(),
+            $wrap = $('#issueswrap'),
+            remaining = books.slice(rendered),
+            chunk = remaining.slice(0, BATCH);
+
+        if (!chunk.length) return;
+
+        rendered += chunk.length;
+        var html = Mustache.to_html(template, { books: chunk });
+        var $frag = $(html);
+        $wrap.append($frag);
+        lazyLoadCovers($frag);
+
+        if (rendered >= books.length) {
+            $('#loadSentinel').hide();
+        }
+    }
+
+    function resetBooks() {
+        rendered = 0;
+        $('#issueswrap').empty();
+        renderBatch();
+        $('#loadSentinel').show();
+    }
+
+    function updateCount() {
+        var total = allBooks.length,
+            shown = getFilteredBooks().length;
+        $('#bookCount').text(total + ' books (' + shown + ' shown)');
+    }
+
+    $(document).ready(function() {
+        var sel = $('#filterByYear'),
+            $wrap = $('#issueswrap');
+
+        template = $('#booktpl').html();
+
+        $.getJSON('./issues.json?' + Math.random(), function(data) {
+            allBooks = data.books;
+            allBooks.sort(randOrd);
+
+            var yearSet = {}, subjSet = {};
+            $.each(allBooks, function(i, book) {
+                if (book.year && book.year !== 0) yearSet[book.year] = true;
+                var subs = getBookSubjects(book);
+                $.each(subs, function(j, s) { subjSet[s] = true; });
+            });
+            var years = Object.keys(yearSet).sort();
+            $.each(years, function(i, y) {
+                sel.append('<option value="' + y + '">' + y + '</option>');
+            });
+            var subjects = Object.keys(subjSet).sort();
+            $.each(subjects, function(i, s) {
+                $('#filterBySubject').append('<option value="' + s + '">' + s + '</option>');
+            });
+
+            resetBooks();
+            updateCount();
+        });
+
+        sel.on('change', function() {
+            currentYear = $(this).val();
+            resetBooks();
+            updateCount();
+        });
+
+        $('#filterBySubject').on('change', function() {
+            currentSubject = $(this).val();
+            resetBooks();
+            updateCount();
+        });
+
+        $('#searchBooks').on('input', function() {
+            searchQuery = $(this).val();
+            resetBooks();
+            updateCount();
+        });
+
+        if ('IntersectionObserver' in window) {
+            var sentinel = document.createElement('div');
+            sentinel.id = 'loadSentinel';
+            $wrap.after(sentinel);
+            var sentinelObs = new IntersectionObserver(function(entries) {
+                if (entries[0].isIntersecting && !loadingMore) {
+                    loadingMore = true;
+                    renderBatch();
+                    updateCount();
+                    loadingMore = false;
+                }
+            });
+            sentinelObs.observe(sentinel);
+        }
+
+        var jsInfos = $('#jsinfos'),
+            btInfo = $('#infos');
+
+        jsInfos.hide();
+        btInfo.on('click', function(){
+          jsInfos.slideToggle();
+        });
+
+        $('.view-toggle').on('click', '.view-btn', function() {
+            $('.view-btn').removeClass('active');
+            $(this).addClass('active');
+            var view = $(this).data('view');
+            $('#issueswrap').removeClass('view-grid view-list').addClass('view-' + view);
+        });
+
+        $wrap.on('click', '.book-link', function(e) {
+            e.preventDefault();
+            var identifier = $(this).data('identifier');
+            $('#readerFrame').attr('src', 'https://archive.org/stream/' + identifier + '/?ui=embed');
+            $('#bookreader').show();
+        });
+
+        $('#closeReader').on('click', function(e) {
+            e.preventDefault();
+            $('#bookreader').hide();
+            $('#readerFrame').attr('src', '');
+        });
+    });
+    </script>
+
+    <script id="booktpl" type="text/template">
+        {{#books}}
+         <div class="span4 booksection year{{year}}">
+           <a class="book-link" href="{{url}}" data-identifier="{{identifier}}">
+            <div class="view"> Read </div>
+            <div title="{{ title }}" class="cover" data-cover="{{cover}}">
+            </div>
+           </a>
+           <div class="book-meta">
+            <h2 title="{{ title }}"><a href="{{url}}">{{title}}</a></h2>
+            <h3><a href="{{authorUrl}}" target="_blank">{{author}}</a></h3>
+            <p class="subject">{{#subjects}}{{.}} {{/subjects}}</p>
+            <p class="level">{{level}}</p>
+            <p class="description">{{info}}</p>
+           </div>
+         </div>
+        {{/books}}
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-3727897-43"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-3727897-43');
+</script>
+<div id="bookreader">
+    <a href="#" id="closeReader">&times;</a>
+    <iframe id="readerFrame" src=""></iframe>
+</div>
+  </body>
+</html>
